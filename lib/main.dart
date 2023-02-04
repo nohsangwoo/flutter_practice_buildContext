@@ -12,6 +12,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  bool showTitle = true;
+  void toggleTitle() {
+    setState(() {
+      showTitle = !showTitle;
+    });
+  }
+
   void onClick() {}
   @override
   Widget build(BuildContext context) {
@@ -29,12 +36,11 @@ class _AppState extends State<App> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const MyLargeTitle(),
+                showTitle ? const MyLargeTitle() : const Text("nothing"),
                 IconButton(
-                    onPressed: onClick,
+                    onPressed: toggleTitle,
                     icon: const Icon(
-                      Icons.add_box_rounded,
-                      size: 40,
+                      Icons.remove_red_eye,
                     ))
               ],
             ),
@@ -45,11 +51,31 @@ class _AppState extends State<App> {
   }
 }
 
-class MyLargeTitle extends StatelessWidget {
+class MyLargeTitle extends StatefulWidget {
   const MyLargeTitle({super.key});
 
   @override
+  State<MyLargeTitle> createState() => _MyLargeTitleState();
+}
+
+class _MyLargeTitleState extends State<MyLargeTitle> {
+  @override
+  void initState() {
+    // widget이 렌더링 될때 처음 딱한번만 실행된다.
+    super.initState();
+    print("initState");
+  }
+
+  @override
+  void dispose() {
+    // widget이 사라질때 한번만 실행된다.
+    super.dispose();
+    print("depose");
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("build");
     return Text(
       "My Large Title",
       style: TextStyle(
